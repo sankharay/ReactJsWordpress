@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+import "../assets/css/Navigation.css";
 
 const Links = [
   {
@@ -20,7 +21,7 @@ const Navigation = () => {
   let selectedPath = location.pathname;
 
   return (
-    <nav className="flex flex-row justify-center gap-8 mb-5">
+    <nav className="flex flex-row-2 justify-center gap-8 mb-5 navigation">
       {Links.map((link) => {
         return (
           <a key={link.label} href={link.url}>

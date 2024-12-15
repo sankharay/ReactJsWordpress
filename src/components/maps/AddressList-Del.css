@@ -1,0 +1,32 @@
+.addressblock{
+    background-color: white;
+    font-size: 16px;
+}
+.addressblock li{
+    background-color: #fcd8b6;
+    padding: 20px;
+}
+.addressblock li:hover{
+    background-color: #f2955c;
+    padding: 20px;
+}
+.icon-colors{
+    color: white;
+    font-size: 20px;
+    margin-right: 10px;
+}
+.locationname{
+    color: #000;
+    font-size: 16px;
+    margin-bottom: 10px;
+    display: block;
+    font-weight: bold;
+}
+.servicename{
+    font-size: 14px;
+    padding-bottom: 10px;
+}
+.contactnumber, .address, .openhours, .website, .distance{
+    padding: 5px;
+}
+

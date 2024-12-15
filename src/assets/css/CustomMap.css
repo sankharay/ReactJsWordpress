@@ -1,0 +1,45 @@
+.search-field{
+    border: #000 1px solid;
+    width: 90%;
+}
+.map-container{
+    gap: 0 !important;
+}
+.autocomplete-container{
+    height: 250px;
+    background-image: url(/src/assets/images/map-top.png);
+    background-size: 130%;
+    background-repeat: none;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+}
+.find-help-block-language{
+    margin-bottom: 50px;
+}
+.find-help-block-header{
+    font-size: 20px;
+    font-weight: 700;
+}
+.icon-colors-top{
+    color: #000;
+    font-size: 25px;
+    margin-right: 10px;
+}
+.autocomplete-container .findaddress{
+    width: 90%;
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    font-size: 25px;
+    background-color: white;
+}
+.hotline-checkbox{
+    height: 15px;
+    width: 15px;
+    margin-right: 8px;
+}
+.find-help-hotline{
+    font-size: 18px;
+}

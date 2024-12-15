@@ -1,5 +1,7 @@
 import Footer from "./Footer";
 import Header from "./Header";
+import Footernavigation from './Footernavigation';
+
 
 /* eslint-disable react/prop-types */
 const Container = ({ children }) => {
@@ -10,6 +12,7 @@ const Container = ({ children }) => {
       <div className="py-8">{children}</div>
       <hr />
       <Footer />
+      <Footernavigation />
     </div>
   );
 };

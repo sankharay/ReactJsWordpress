@@ -1,0 +1,12 @@
+header{
+    border-bottom: 1px;
+    border-style: solid;
+    border-bottom: #e5e7eb;
+    height: 50px;
+}
+.nav-mobile{
+    display: flex;
+}
+.mobile-nav-container{
+    flex: 1;
+}
