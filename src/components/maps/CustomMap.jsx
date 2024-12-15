@@ -17,9 +17,9 @@ const center = {
 };
 
 const mapOptions = {
-  streetViewControl: false, // Disable the Street View control
-  mapTypeControl: false, // Optional: Disable map type control
-  fullscreenControl: false, // Optional: Enable fullscreen control
+  streetViewControl: false, 
+  mapTypeControl: false, 
+  fullscreenControl: false, 
 };
 
 function CustomMap() {
@@ -28,7 +28,6 @@ function CustomMap() {
   const [markers, setMarkers] = useState([]);
   const [addresses, setAddresses] = useState([]);
 
-  // This is the handler for address selection
   const handlePlaceChanged = () => {
     if (autocomplete) {
       const place = autocomplete.getPlace();
@@ -36,14 +35,12 @@ function CustomMap() {
         const { lat, lng } = place.geometry.location;
         const address = place.formatted_address;
 
-        // Send API request to get nearby locations
         fetchNearbyLocations(address, lat(), lng());
 
-        // Add marker to the map with a unique ID
         setMarkers((prevMarkers) => [
           ...prevMarkers,
           {
-            id: `custom-${Date.now()}`, // Unique ID for custom marker
+            id: `custom-${Date.now()}`,
             position: { lat: lat(), lng: lng() },
             content: `Selected Address: ${address}`,
           },
@@ -53,48 +50,43 @@ function CustomMap() {
   };
 
   const fetchNearbyLocations = (address, lat, lng) => {
-    // Encode address, lat, and lng to ensure special characters don't break the URL
     const encodedAddress = encodeURIComponent(address);
     const encodedLat = encodeURIComponent(lat);
     const encodedLng = encodeURIComponent(lng);
 
-    console.log(`Sending request with: address=${encodedAddress}, lat=${encodedLat}, lng=${encodedLng}`);
-
     fetch(`https://isawrisk.com/home/getNearbyLocationsApp?address=${encodedAddress}&lat=${encodedLat}&lng=${encodedLng}&hotline=0&range=20`)
       .then((response) => response.json())
       .then((data) => {
-        // Extract latitudes and longitudes from the response and add markers
         const newMarkers = data.map((location, index) => ({
-          id: `api-${location.name}-${index}`, // Unique ID for API markers
+          id: `api-${location.name}-${index}`,
           position: { lat: parseFloat(location.lat), lng: parseFloat(location.lng) },
           content: location.name,
           parent: location.parent,
         }));
         setMarkers((prevMarkers) => [...prevMarkers, ...newMarkers]);
         setAddresses(data);
-        console.log("Fetched nearby locations:", data);
       })
       .catch((error) => console.error("Error fetching nearby locations:", error));
   };
 
-
   const handleMarkerClick = (marker) => {
-    setActiveMarker(marker.id === activeMarker?.id ? null : marker);
+    // Toggle visibility of InfoWindow
+    setActiveMarker(activeMarker?.id === marker.id ? null : marker);
   };
 
   return (
     <>
       <LoadScript
-        googleMapsApiKey="AIzaSyBAcgZInamcDOnFcLkBa0pCI6bPJHSSYjY"
-        libraries={["places"]} // Make sure to add this line to load the 'places' library
+        googleMapsApiKey=""
+        libraries={["places"]}
       >
-        {/* Autocomplete Input */}
         <div className="autocomplete-container">
           <div className="find-help-block-language"><Language className="icon-colors-top" />English</div>
           <div className="find-help-block-header"><Info className="icon-colors-top" />Find Help</div>
           <Autocomplete onLoad={(auto) => setAutocomplete(auto)} onPlaceChanged={handlePlaceChanged}>
-            {/* <input type="text" className="findaddress" placeholder="Enter your postel code" /> */}
-            <Input  type="text" className="findaddress"
+            <Input
+              type="text"
+              className="findaddress"
               id="input-with-icon-adornment"
               startAdornment={
                 <InputAdornment position="start">
@@ -119,20 +111,19 @@ function CustomMap() {
           mapContainerStyle={containerStyle}
           center={center}
           zoom={10}
-          onClick={() => setActiveMarker(null)}
+          onClick={() => setActiveMarker(null)} // Close InfoWindow when map is clicked
           options={mapOptions}
         >
-          {/* Markers */}
           {markers.map((marker) => (
             <MarkerF
-              key={marker.id} // Ensure the key is unique
+              key={marker.id}
               position={marker.position}
               onClick={() => handleMarkerClick(marker)}
             >
               {activeMarker?.id === marker.id && (
                 <InfoWindow
                   position={marker.position}
-                  onCloseClick={() => setActiveMarker(null)}
+                  onCloseClick={() => setActiveMarker(null)} // Close the InfoWindow when close is clicked
                 >
                   <div>
                     <h4>{marker.content}</h4>
@@ -144,7 +135,6 @@ function CustomMap() {
           ))}
         </GoogleMap>
       </LoadScript>
-      {/* Address List Below the Map */}
       <AddressList addresses={addresses} />
     </>
   );
