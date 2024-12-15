@@ -26,7 +26,7 @@ const AutocompleteExample = () => {
   };
 
   return (
-    <LoadScript googleMapsApiKey="AIzaSyBAcgZInamcDOnFcLkBa0pCI6bPJHSSYjY" libraries={["places"]}>
+    <LoadScript googleMapsApiKey="" libraries={["places"]}>
       <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
         <input type="text" placeholder="Type an address" />
       </Autocomplete>
