@@ -2,7 +2,7 @@ import { useState } from "react";
 import { GoogleMap, LoadScript, MarkerF, InfoWindow, Autocomplete } from "@react-google-maps/api";
 import AddressList from "./AddressList";
 import '../../assets/css/CustomMap.css';
-import { Info, LocationOn, Search, Place, Route } from '@mui/icons-material';
+import { Info, LocationOn, Search, Place, Language } from '@mui/icons-material';
 import InputAdornment from '@mui/material/InputAdornment';
 import Input from '@mui/material/Input';
 
@@ -14,6 +14,12 @@ const containerStyle = {
 const center = {
   lat: 49.126563,
   lng: -122.799900,
+};
+
+const mapOptions = {
+  streetViewControl: false, // Disable the Street View control
+  mapTypeControl: false, // Optional: Disable map type control
+  fullscreenControl: false, // Optional: Enable fullscreen control
 };
 
 function CustomMap() {
@@ -31,7 +37,6 @@ function CustomMap() {
         const address = place.formatted_address;
 
         // Send API request to get nearby locations
-        console.log('--------------' + place.geometry.location + '--------------' + lat());
         fetchNearbyLocations(address, lat(), lng());
 
         // Add marker to the map with a unique ID
@@ -63,6 +68,7 @@ function CustomMap() {
           id: `api-${location.name}-${index}`, // Unique ID for API markers
           position: { lat: parseFloat(location.lat), lng: parseFloat(location.lng) },
           content: location.name,
+          parent: location.parent,
         }));
         setMarkers((prevMarkers) => [...prevMarkers, ...newMarkers]);
         setAddresses(data);
@@ -84,7 +90,7 @@ function CustomMap() {
       >
         {/* Autocomplete Input */}
         <div className="autocomplete-container">
-          <div className="find-help-block-language">English</div>
+          <div className="find-help-block-language"><Language className="icon-colors-top" />English</div>
           <div className="find-help-block-header"><Info className="icon-colors-top" />Find Help</div>
           <Autocomplete onLoad={(auto) => setAutocomplete(auto)} onPlaceChanged={handlePlaceChanged}>
             {/* <input type="text" className="findaddress" placeholder="Enter your postel code" /> */}
@@ -114,6 +120,7 @@ function CustomMap() {
           center={center}
           zoom={10}
           onClick={() => setActiveMarker(null)}
+          options={mapOptions}
         >
           {/* Markers */}
           {markers.map((marker) => (
@@ -129,6 +136,7 @@ function CustomMap() {
                 >
                   <div>
                     <h4>{marker.content}</h4>
+                    <h4>{marker.parent}</h4>
                   </div>
                 </InfoWindow>
               )}
