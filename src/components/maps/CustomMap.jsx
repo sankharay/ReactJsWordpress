@@ -27,6 +27,8 @@ function CustomMap() {
   const [autocomplete, setAutocomplete] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [addresses, setAddresses] = useState([]);
+  const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
 
   const handlePlaceChanged = () => {
     if (autocomplete) {
@@ -77,7 +79,7 @@ function CustomMap() {
   return (
     <>
       <LoadScript
-        googleMapsApiKey=""
+        googleMapsApiKey= {googleMapsApiKey}
         libraries={["places"]}
       >
         <div className="autocomplete-container">
