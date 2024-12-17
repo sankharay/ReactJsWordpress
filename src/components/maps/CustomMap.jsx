@@ -83,7 +83,7 @@ function CustomMap() {
         libraries={["places"]}
       >
         <div className="autocomplete-container">
-          <div className="find-help-block-language"><Language className="icon-colors-top" />English:</div>
+          <div className="find-help-block-language"><Language className="icon-colors-top" />English</div>
           <div className="find-help-block-header"><Info className="icon-colors-top" />Find Help</div>
           <Autocomplete onLoad={(auto) => setAutocomplete(auto)} onPlaceChanged={handlePlaceChanged}>
             <Input
