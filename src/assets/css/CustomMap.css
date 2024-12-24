@@ -59,3 +59,14 @@
 .marker_addressblock svg{
     margin-right: 2px;
 }
+.find-help-block{
+    width: 100%;
+}
+.find-help-block .find-help-hotline{
+    width: 40%;
+    float: left;
+}
+.find-help-block .find-help-distance{
+    width: 50%;
+    float: left;
+}

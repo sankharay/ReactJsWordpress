@@ -5,6 +5,9 @@ import '../../assets/css/CustomMap.css';
 import { Info, LocationOn, Search, Place, Language, Phone, QueryBuilder } from '@mui/icons-material';
 import InputAdornment from '@mui/material/InputAdornment';
 import Input from '@mui/material/Input';
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
+import Typography from '@mui/material/Typography';
 
 const containerStyle = {
   width: "100%",
@@ -17,10 +20,14 @@ const center = {
 };
 
 const mapOptions = {
-  streetViewControl: false, 
-  mapTypeControl: false, 
-  fullscreenControl: false, 
+  streetViewControl: false,
+  mapTypeControl: false,
+  fullscreenControl: false,
 };
+
+function valuetext() {
+  return `°C`;
+}
 
 function CustomMap() {
   const [activeMarker, setActiveMarker] = useState(null);
@@ -80,10 +87,21 @@ function CustomMap() {
     setActiveMarker(activeMarker?.id === marker.id ? null : marker);
   };
 
+  const marks = [
+    {
+      value: 0,
+      label: '0 Miles',
+    },
+    {
+      value: 25,
+      label: '25 Miles',
+    },
+  ];
+
   return (
     <>
       <LoadScript
-        googleMapsApiKey= {googleMapsApiKey}
+        googleMapsApiKey={googleMapsApiKey}
         libraries={["places"]}
       >
         <div className="autocomplete-container">
@@ -109,7 +127,21 @@ function CustomMap() {
 
           <div className="find-help-block">
             <span className="find-help-hotline"><input type="checkbox" name="hotline" className="hotline-checkbox" />24/7 HOTLINE</span>
-            <span className="find-help-distance">Distance</span>
+            <span className="find-help-distance">
+              <Box>
+                <Slider
+                  aria-label="Temperature"
+                  defaultValue={30}
+                  getAriaValueText={valuetext}
+                  valueLabelDisplay="on"
+                  shiftStep={5}
+                  step={5}
+                  marks={marks}
+                  min={0}
+                  max={25}
+                />
+              </Box>
+            </span>
           </div>
         </div>
 
@@ -132,19 +164,19 @@ function CustomMap() {
                   onCloseClick={() => setActiveMarker(null)} // Close the InfoWindow when close is clicked
                 >
                   <div className="marker_addressblock">
-                  <ul>
+                    <ul>
                       <li className="title">{marker.name}</li>
-                      <li><Phone className="icon-colors"/> {marker.contactNumber}</li>
-                      <li><LocationOn className="icon-colors"/> {marker.address}</li>
-                      <li><QueryBuilder className="icon-colors"/> {marker.openHours}</li>
+                      <li><Phone className="icon-colors" /> {marker.contactNumber}</li>
+                      <li><LocationOn className="icon-colors" /> {marker.address}</li>
+                      <li><QueryBuilder className="icon-colors" /> {marker.openHours}</li>
                       <li>
                         {" "}
-                          <Language className="icon-colors"/>
-                          <a href={`https://${marker.url}`} target="_blank" rel="noopener noreferrer">
-                              {marker.url}
-                          </a>{" "}
+                        <Language className="icon-colors" />
+                        <a href={`https://${marker.url}`} target="_blank" rel="noopener noreferrer">
+                          {marker.url}
+                        </a>{" "}
                       </li>
-                  </ul>
+                    </ul>
                   </div>
                 </InfoWindow>
               )}
