@@ -2,7 +2,7 @@ import { useState } from "react";
 import { GoogleMap, LoadScript, MarkerF, InfoWindow, Autocomplete } from "@react-google-maps/api";
 import AddressList from "./AddressList";
 import '../../assets/css/CustomMap.css';
-import { Info, LocationOn, Search, Place, Language } from '@mui/icons-material';
+import { Info, LocationOn, Search, Place, Language, Phone, QueryBuilder } from '@mui/icons-material';
 import InputAdornment from '@mui/material/InputAdornment';
 import Input from '@mui/material/Input';
 
@@ -62,8 +62,12 @@ function CustomMap() {
         const newMarkers = data.map((location, index) => ({
           id: `api-${location.name}-${index}`,
           position: { lat: parseFloat(location.lat), lng: parseFloat(location.lng) },
-          content: location.name,
-          parent: location.parent,
+          name: location.name,
+          program: location.program,
+          contactNumber: location.contactNumber,
+          address: location.address,
+          openHours: location.openHours,
+          url: location.url
         }));
         setMarkers((prevMarkers) => [...prevMarkers, ...newMarkers]);
         setAddresses(data);
@@ -127,9 +131,20 @@ function CustomMap() {
                   position={marker.position}
                   onCloseClick={() => setActiveMarker(null)} // Close the InfoWindow when close is clicked
                 >
-                  <div>
-                    <h4>{marker.content}</h4>
-                    <h4>{marker.parent}</h4>
+                  <div className="marker_addressblock">
+                  <ul>
+                      <li className="title">{marker.name}</li>
+                      <li><Phone className="icon-colors"/> {marker.contactNumber}</li>
+                      <li><LocationOn className="icon-colors"/> {marker.address}</li>
+                      <li><QueryBuilder className="icon-colors"/> {marker.openHours}</li>
+                      <li>
+                        {" "}
+                          <Language className="icon-colors"/>
+                          <a href={`https://${marker.url}`} target="_blank" rel="noopener noreferrer">
+                              {marker.url}
+                          </a>{" "}
+                      </li>
+                  </ul>
                   </div>
                 </InfoWindow>
               )}

@@ -43,3 +43,19 @@
 .find-help-hotline{
     font-size: 18px;
 }
+.marker_addressblock .icon-colors{
+    color: #073b6f;
+}
+.marker_addressblock .title{
+    color: #073b6f;
+    font-size: 18px;
+    font-weight:900;
+    margin-bottom: 10px;
+}
+.marker_addressblock li{
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+.marker_addressblock svg{
+    margin-right: 2px;
+}
