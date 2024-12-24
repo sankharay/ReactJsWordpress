@@ -8,6 +8,7 @@ import Input from '@mui/material/Input';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress'; // For loader
 
 const containerStyle = {
   width: "100%",
@@ -38,7 +39,8 @@ function CustomMap() {
   const [selectedCoordinates, setSelectedCoordinates] = useState(null);
   const [selectedMarkerId, setSelectedMarkerId] = useState(null); // State for green balloon
   const [hotline, setHotline] = useState(false); // State for checkbox
-  const [distance, setDistance] = useState(10); // State for slider
+  const [distance, setDistance] = useState(5); // Default to 5 miles
+  const [isLoading, setIsLoading] = useState(false); // State for loader visibility
   const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   const handlePlaceChanged = () => {
@@ -56,6 +58,7 @@ function CustomMap() {
         setSelectedCoordinates({ lat: lat(), lng: lng() });
         setSelectedMarkerId(newMarkerId);
 
+        // Update the map center to the selected place
         setMarkers((prevMarkers) => [
           ...prevMarkers,
           {
@@ -74,9 +77,12 @@ function CustomMap() {
       const encodedLat = encodeURIComponent(selectedCoordinates.lat);
       const encodedLng = encodeURIComponent(selectedCoordinates.lng);
 
+      setIsLoading(true); // Show loader when fetching locations
+
       fetch(`https://isawrisk.com/home/getNearbyLocationsApp?address=${encodedAddress}&lat=${encodedLat}&lng=${encodedLng}&hotline=${hotline ? 1 : 0}&range=${distance}`)
         .then((response) => response.json())
         .then((data) => {
+          // Clear existing markers before adding new ones
           const newMarkers = data.map((location, index) => ({
             id: `api-${location.name}-${index}`,
             position: { lat: parseFloat(location.lat), lng: parseFloat(location.lng) },
@@ -87,10 +93,13 @@ function CustomMap() {
             openHours: location.openHours,
             url: location.url,
           }));
-          setMarkers((prevMarkers) => [...prevMarkers, ...newMarkers]);
+
+          // Clear old markers and set new ones
+          setMarkers(newMarkers);
           setAddresses(data);
         })
-        .catch((error) => console.error("Error fetching nearby locations:", error));
+        .catch((error) => console.error("Error fetching nearby locations:", error))
+        .finally(() => setIsLoading(false)); // Hide loader after fetching
     } else {
       console.error("No address or coordinates selected.");
     }
@@ -154,15 +163,15 @@ function CustomMap() {
               <Box>
                 <Slider
                   aria-label="Distance"
-                  defaultValue={10}
+                  defaultValue={5}
                   getAriaValueText={valuetext}
                   valueLabelDisplay="on"
                   step={5}
                   marks={marks}
-                  min={0}
+                  min={5}
                   max={25}
                   value={distance}
-                  onChange={(e, value) => setDistance(value)} // Update slider state
+                  onChange={(e, value) => setDistance(value)}
                 />
               </Box>
             </span>
@@ -178,9 +187,16 @@ function CustomMap() {
           Fetch Nearby Locations
         </Button>
 
+        {/* Loader */}
+        {isLoading && (
+          <div className="loader-container">
+            <CircularProgress />
+          </div>
+        )}
+
         <GoogleMap
           mapContainerStyle={containerStyle}
-          center={center}
+          center={selectedCoordinates || center} // Update map center when a new address is selected
           zoom={10}
           onClick={() => setActiveMarker(null)} // Close InfoWindow when map is clicked
           options={mapOptions}
