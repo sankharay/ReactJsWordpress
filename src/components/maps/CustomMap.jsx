@@ -7,7 +7,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Input from '@mui/material/Input';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
-import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
 const containerStyle = {
   width: "100%",
@@ -25,8 +25,8 @@ const mapOptions = {
   fullscreenControl: false,
 };
 
-function valuetext() {
-  return `°C`;
+function valuetext(value) {
+  return `${value} Miles`;
 }
 
 function CustomMap() {
@@ -34,8 +34,12 @@ function CustomMap() {
   const [autocomplete, setAutocomplete] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [addresses, setAddresses] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [selectedCoordinates, setSelectedCoordinates] = useState(null);
+  const [selectedMarkerId, setSelectedMarkerId] = useState(null); // State for green balloon
+  const [hotline, setHotline] = useState(false); // State for checkbox
+  const [distance, setDistance] = useState(10); // State for slider
   const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-
 
   const handlePlaceChanged = () => {
     if (autocomplete) {
@@ -44,12 +48,18 @@ function CustomMap() {
         const { lat, lng } = place.geometry.location;
         const address = place.formatted_address;
 
-        fetchNearbyLocations(address, lat(), lng());
+        // Create a unique marker ID for the selected address
+        const newMarkerId = `custom-${Date.now()}`;
+
+        // Store the selected address and coordinates
+        setSelectedAddress(address);
+        setSelectedCoordinates({ lat: lat(), lng: lng() });
+        setSelectedMarkerId(newMarkerId);
 
         setMarkers((prevMarkers) => [
           ...prevMarkers,
           {
-            id: `custom-${Date.now()}`,
+            id: newMarkerId,
             position: { lat: lat(), lng: lng() },
             content: `Selected Address: ${address}`,
           },
@@ -58,28 +68,32 @@ function CustomMap() {
     }
   };
 
-  const fetchNearbyLocations = (address, lat, lng) => {
-    const encodedAddress = encodeURIComponent(address);
-    const encodedLat = encodeURIComponent(lat);
-    const encodedLng = encodeURIComponent(lng);
+  const fetchNearbyLocations = () => {
+    if (selectedAddress && selectedCoordinates) {
+      const encodedAddress = encodeURIComponent(selectedAddress);
+      const encodedLat = encodeURIComponent(selectedCoordinates.lat);
+      const encodedLng = encodeURIComponent(selectedCoordinates.lng);
 
-    fetch(`https://isawrisk.com/home/getNearbyLocationsApp?address=${encodedAddress}&lat=${encodedLat}&lng=${encodedLng}&hotline=0&range=20`)
-      .then((response) => response.json())
-      .then((data) => {
-        const newMarkers = data.map((location, index) => ({
-          id: `api-${location.name}-${index}`,
-          position: { lat: parseFloat(location.lat), lng: parseFloat(location.lng) },
-          name: location.name,
-          program: location.program,
-          contactNumber: location.contactNumber,
-          address: location.address,
-          openHours: location.openHours,
-          url: location.url
-        }));
-        setMarkers((prevMarkers) => [...prevMarkers, ...newMarkers]);
-        setAddresses(data);
-      })
-      .catch((error) => console.error("Error fetching nearby locations:", error));
+      fetch(`https://isawrisk.com/home/getNearbyLocationsApp?address=${encodedAddress}&lat=${encodedLat}&lng=${encodedLng}&hotline=${hotline ? 1 : 0}&range=${distance}`)
+        .then((response) => response.json())
+        .then((data) => {
+          const newMarkers = data.map((location, index) => ({
+            id: `api-${location.name}-${index}`,
+            position: { lat: parseFloat(location.lat), lng: parseFloat(location.lng) },
+            name: location.name,
+            program: location.program,
+            contactNumber: location.contactNumber,
+            address: location.address,
+            openHours: location.openHours,
+            url: location.url,
+          }));
+          setMarkers((prevMarkers) => [...prevMarkers, ...newMarkers]);
+          setAddresses(data);
+        })
+        .catch((error) => console.error("Error fetching nearby locations:", error));
+    } else {
+      console.error("No address or coordinates selected.");
+    }
   };
 
   const handleMarkerClick = (marker) => {
@@ -126,24 +140,43 @@ function CustomMap() {
           </Autocomplete>
 
           <div className="find-help-block">
-            <span className="find-help-hotline"><input type="checkbox" name="hotline" className="hotline-checkbox" />24/7 HOTLINE</span>
+            <span className="find-help-hotline">
+              <input
+                type="checkbox"
+                name="hotline"
+                className="hotline-checkbox"
+                checked={hotline}
+                onChange={(e) => setHotline(e.target.checked)} // Update checkbox state
+              />
+              24/7 HOTLINE
+            </span>
             <span className="find-help-distance">
               <Box>
                 <Slider
-                  aria-label="Temperature"
-                  defaultValue={30}
+                  aria-label="Distance"
+                  defaultValue={10}
                   getAriaValueText={valuetext}
                   valueLabelDisplay="on"
-                  shiftStep={5}
                   step={5}
                   marks={marks}
                   min={0}
                   max={25}
+                  value={distance}
+                  onChange={(e, value) => setDistance(value)} // Update slider state
                 />
               </Box>
             </span>
           </div>
         </div>
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={fetchNearbyLocations}
+          disabled={!selectedAddress || !selectedCoordinates} // Disable button if no address is selected
+        >
+          Fetch Nearby Locations
+        </Button>
 
         <GoogleMap
           mapContainerStyle={containerStyle}
@@ -157,6 +190,17 @@ function CustomMap() {
               key={marker.id}
               position={marker.position}
               onClick={() => handleMarkerClick(marker)}
+              icon={{
+                url: marker.id === selectedMarkerId
+                  ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                  : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                scaledSize: new window.google.maps.Size(40, 40), // Adjust icon size if needed
+              }}
+              animation={
+                marker.id === selectedMarkerId
+                  ? window.google.maps.Animation.BOUNCE
+                  : null
+              }
             >
               {activeMarker?.id === marker.id && (
                 <InfoWindow
