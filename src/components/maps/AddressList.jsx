@@ -2,7 +2,7 @@ import React from "react";
 import '../../assets/css/AddressList.css';
 import { Phone, LocationOn, Language, QueryBuilder, Route } from '@mui/icons-material';
 
-function AddressList({ addresses }) {
+function AddressList({ addresses, onAddressClick }) {
     return (
         <div>
             {addresses.length === 0 ? (
@@ -12,7 +12,7 @@ function AddressList({ addresses }) {
                     {addresses
                         .filter((location) => location.name && location.name.trim() !== "")
                         .map((location, index) => (
-                            <li key={index}>
+                            <li key={index} onClick={() => onAddressClick(location)}>
                                 <div className="locationname">{location.name} </div>
                                 <div className="servicename">{location.program} </div>
                                 <div className="contactnumber">

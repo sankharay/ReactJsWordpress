@@ -110,6 +110,16 @@ function CustomMap() {
     setActiveMarker(activeMarker?.id === marker.id ? null : marker);
   };
 
+  const handleAddressClick = (location) => {
+    // Find the marker corresponding to the clicked address
+    const marker = markers.find((marker) => marker.address === location.address);
+    if (marker) {
+      setSelectedMarkerId(marker.id); // Set the selected marker
+      setSelectedCoordinates(marker.position); // Center map on selected marker
+      setActiveMarker(marker); // Open InfoWindow
+    }
+  };
+
   const marks = [
     {
       value: 0,
@@ -244,7 +254,7 @@ function CustomMap() {
           ))}
         </GoogleMap>
       </LoadScript>
-      <AddressList addresses={addresses} />
+      <AddressList addresses={addresses} onAddressClick={handleAddressClick} />
     </>
   );
 }
