@@ -12,9 +12,8 @@ const Footer = () => {
         {", "}
         2024.{" "}
         <a
-          href="mailto:othy.tenk@gmail.com"
-          className="font-semibold text-neutral-500"
-        >
+          href="mailto:sandeep@activeix.com"
+          className="font-semibold text-neutral-500">
           Send email
         </a>
       </div>
