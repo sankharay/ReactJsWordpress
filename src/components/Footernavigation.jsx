@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
-import { Home, AddIcCall, Build, ExitToApp,HealthAndSafety } from '@mui/icons-material';
+import { Home, AddIcCall, Build, ExitToApp, HealthAndSafety } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const BottomMenu = () => {
     const [value, setValue] = useState(0);
@@ -18,11 +19,34 @@ const BottomMenu = () => {
                 boxShadow: '0px -1px 5px rgba(0, 0, 0, 0.2)',
             }}
         >
-            <BottomNavigationAction label="Home" icon={<Home />} />
-            <BottomNavigationAction label="Find Help" icon={<AddIcCall />} />
-            <BottomNavigationAction label="Risk Tool" icon={<Build />} />
-            <BottomNavigationAction label="Stay Safe" icon={<HealthAndSafety />} />
-            <BottomNavigationAction label="Exit" icon={<ExitToApp />} />
+            <BottomNavigationAction
+                label="Home"
+                icon={<Home />}
+                component={Link}
+                to="/"
+            />
+            <BottomNavigationAction
+                label="Find Help"
+                icon={<AddIcCall />}
+            />
+            <BottomNavigationAction
+                label="Risk Tool"
+                icon={<Build />}
+                component={Link}
+                to="/rat"
+            />
+            <BottomNavigationAction
+                label="Stay Safe"
+                icon={<HealthAndSafety />}
+                component={Link}
+                to="/safety"
+            />
+            <BottomNavigationAction
+                label="Exit"
+                icon={<ExitToApp />}
+                component={Link}
+                to="https://www.google.com/"
+            />
         </BottomNavigation>
     );
 };

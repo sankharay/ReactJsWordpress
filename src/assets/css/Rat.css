@@ -1,0 +1,24 @@
+.feedBackTextField{
+    color: currentColor;
+    padding: 4px 0 5px;
+    border: 0;
+    box-sizing: content-box;
+    background: none;
+    height: 1.4375em;
+    margin: 20px;
+    display: block;
+    width: 100%;
+}
+.questionWindow{
+    padding: 10px;
+}
+.questionWindow .questions{
+    padding: 10px;
+}
+.contactForm{
+    padding: 10px;
+}
+.contactForm .contactForm-input{
+    width: 100%;
+    padding: 20px;
+}
