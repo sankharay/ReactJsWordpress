@@ -14,40 +14,23 @@ const Chat = () => {
   const [followUpQuestions, setFollowUpQuestions] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+  const [feedback, setFeedback] = useState('');
   const maxQuestions = 5;
   const [contactDetails, setContactDetails] = useState({ phone: '', email: '' });
 
   const generateHashId = () => uuidv4();
 
-  const storeDataInDynamoDB = async (question) => {
+  const storeDataInDynamoDB = async (data) => {
     try {
-      const hashId = generateHashId();
-      const ipAddress = await axios
-        .get('https://api64.ipify.org?format=json')
-        .then((res) => res.data.ip)
-        .catch(() => '0.0.0.0'); // Fallback IP if API fails
-
-      const postData = {
-        hash_id: hashId,
-        ip_address: ipAddress,
-        question: question,
-      };
-
-      console.log('Sending data to DynamoDB:', postData);
-
       const dynamoDbUrl = 'https://viw5kle5t7.execute-api.us-east-2.amazonaws.com/storedynamodata';
 
-      await axios.post(dynamoDbUrl, postData, {
+      await axios.post(dynamoDbUrl, data, {
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer 123213213131`,
-          'Access-Control-Allow-Origin': '*', // Allow all origins during development
-          'Access-Control-Allow-Methods': 'POST',
-          'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+          "Content-Type": 'application/json'
         },
       });
 
-      console.log('Data successfully stored in DynamoDB:', postData);
+      console.log('Data successfully stored in DynamoDB:', data);
     } catch (error) {
       console.error('Error storing data in DynamoDB:', error.response?.data || error.message);
     }
@@ -92,7 +75,7 @@ const Chat = () => {
 
       // Validate response format
       try {
-        const parsedResponse = JSON.parse(botResponse); // Attempt to parse as JSON
+        const parsedResponse = JSON.parse(botResponse);
 
         setFollowUpQuestions(parsedResponse.next_questions || []);
         setResponse(parsedResponse.risk_level || 'Response received');
@@ -101,8 +84,14 @@ const Chat = () => {
         setSelectedOption('');
         setSelectedCheckboxes([]);
 
-        // Store data in DynamoDB
-        storeDataInDynamoDB(userMessage);
+        // Store question and feedback in DynamoDB
+        const postData = {
+          hash_id: generateHashId(),
+          question: userMessage,
+          feedback: feedback || '',
+        };
+
+        storeDataInDynamoDB(postData);
       } catch (parseError) {
         // Handle non-JSON response
         setResponse(
@@ -116,11 +105,14 @@ const Chat = () => {
     }
   };
 
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-    setSelectedCheckboxes((prev) =>
-      checked ? [...prev, value] : prev.filter((item) => item !== value)
-    );
+  const handleSubmitContact = () => {
+    const postData = {
+      hash_id: generateHashId(),
+      contact: contactDetails,
+    };
+
+    storeDataInDynamoDB(postData);
+    setResponse('Thank you! Your contact information has been saved.');
   };
 
   const handleContactChange = (e) => {
@@ -150,6 +142,11 @@ const Chat = () => {
                 </InputAdornment>
               }
             />
+            <textarea
+              placeholder="Provide your feedback here..."
+              value={feedback}
+              onChange={(e) => setFeedback(e.target.value)}
+            ></textarea>
             <button onClick={sendMessage}>Ask</button>
           </div>
         ) : (
@@ -173,11 +170,18 @@ const Chat = () => {
                       type="checkbox"
                       id={`checkbox-${index}`}
                       value={questionObj.question}
-                      onChange={handleCheckboxChange}
+                      onChange={(e) => setSelectedCheckboxes((prev) =>
+                        e.target.checked ? [...prev, e.target.value] : prev.filter((item) => item !== e.target.value)
+                      )}
                     />
                     <label htmlFor={`checkbox-${index}`}>{questionObj.question}</label>
                   </div>
                 ))}
+            <textarea
+              placeholder="Provide your feedback here..."
+              value={feedback}
+              onChange={(e) => setFeedback(e.target.value)}
+            ></textarea>
             <Button onClick={sendMessage} variant="contained">
               Ask
             </Button>
@@ -204,7 +208,7 @@ const Chat = () => {
               onChange={handleContactChange}
             />
           </div>
-          <Button variant="contained" onClick={() => console.log(contactDetails)}>
+          <Button variant="contained" onClick={handleSubmitContact}>
             Submit
           </Button>
         </div>
