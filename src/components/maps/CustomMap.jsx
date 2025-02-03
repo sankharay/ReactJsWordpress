@@ -138,13 +138,16 @@ function CustomMap() {
         libraries={["places"]}
       >
         <div className="autocomplete-container">
-          <div className="find-help-block-language"><Language className="icon-colors-top" />English</div>
-          <div className="find-help-block-header"><Info className="icon-colors-top" />Find Help</div>
+          <div className="top-header-block">
+            <div className="find-help-block-header"><Info className="icon-colors-top" />Find Help</div>
+            <div className="find-help-block-language"><Language className="icon-colors-top" />ENGLISH</div>
+          </div>
           <Autocomplete onLoad={(auto) => setAutocomplete(auto)} onPlaceChanged={handlePlaceChanged}>
             <Input
               type="text"
               className="findaddress"
               id="input-with-icon-adornment"
+              placeholder="enter your postel code" 
               startAdornment={
                 <InputAdornment position="start">
                   <Search />
@@ -159,18 +162,10 @@ function CustomMap() {
           </Autocomplete>
 
           <div className="find-help-block">
-            <span className="find-help-hotline">
-              <input
-                type="checkbox"
-                name="hotline"
-                className="hotline-checkbox"
-                checked={hotline}
-                onChange={(e) => setHotline(e.target.checked)} // Update checkbox state
-              />
-              24/7 HOTLINE
-            </span>
-            <span className="find-help-distance">
-              <Box>
+
+          <span className="find-help-distance">
+            <div className="top-slider-text">only show me listing within a specific distance</div>
+              <Box sx ={{ height: 50 }}>
                 <Slider
                   aria-label="Distance"
                   defaultValue={5}
@@ -184,6 +179,16 @@ function CustomMap() {
                   onChange={(e, value) => setDistance(value)}
                 />
               </Box>
+            </span>
+            <span className="find-help-hotline">
+              <input
+                type="checkbox"
+                name="hotline"
+                className="hotline-checkbox"
+                checked={hotline}
+                onChange={(e) => setHotline(e.target.checked)} // Update checkbox state
+              />
+              24/7 HOTLINE
             </span>
           </div>
         </div>

@@ -6,8 +6,6 @@
     gap: 0 !important;
 }
 .autocomplete-container{
-    height: 250px;
-    background-image: url(/src/assets/images/map-top.png);
     background-size: 130%;
     background-repeat: none;
     background-position: center;
@@ -15,11 +13,14 @@
     padding-left: 20px;
 }
 .find-help-block-language{
-    margin-bottom: 50px;
+    margin-bottom: 10px;
+    text-align: right;
 }
 .find-help-block-header{
     font-size: 20px;
     font-weight: 700;
+    width: 50%;
+    float: left;
 }
 .icon-colors-top{
     color: #000;
@@ -27,13 +28,14 @@
     margin-right: 10px;
 }
 .autocomplete-container .findaddress{
-    width: 90%;
+    width: 95%;
     height: 50px;
     margin-top: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
-    font-size: 25px;
-    background-color: white;
+    font-size: 20px;
+    background-color: #F8F5F0;
+    padding-left: 10px;
 }
 .hotline-checkbox{
     height: 15px;
@@ -65,8 +67,23 @@
 .find-help-block .find-help-hotline{
     width: 40%;
     float: left;
+    margin-bottom: 20px
 }
 .find-help-block .find-help-distance{
-    width: 50%;
+    width: 95%;
     float: left;
+}
+.top-header-block{
+    width: 95%;
+    padding-left: 0px;
+    padding-right: 10px;
+}
+.css-1cmet5c-MuiInputBase-root-MuiInput-root
+{
+    border-bottom: none !important;
+    position: initial !important;
+}
+.find-help-distance .MuiBox-root .MuiSlider-markLabel{
+    left: 50% !important;
+    margin-top: -10px;
 }
