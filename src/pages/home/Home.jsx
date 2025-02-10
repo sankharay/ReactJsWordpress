@@ -5,13 +5,15 @@ import CustomMaps from "../../components/maps/CustomMap";
 
 const HomePage = () => {
   return (
-    <Container>
-      <section className="map-container flex flex-col md:flex-row gap-8">
-        <CustomMaps />
-        {/* <Blogs />
+    <div className="main-container">
+      <Container>
+        <section className="map-container flex flex-col md:flex-row gap-8">
+          <CustomMaps />
+          {/* <Blogs />
         <Categories /> */}
-      </section>
-    </Container>
+        </section>
+      </Container>
+    </div>
   );
 };
 

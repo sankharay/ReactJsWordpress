@@ -8,6 +8,7 @@ import Input from '@mui/material/Input';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
+import GridViewIcon from '@mui/icons-material/GridView';
 import CircularProgress from '@mui/material/CircularProgress'; // For loader
 
 const containerStyle = {
@@ -139,6 +140,7 @@ function CustomMap() {
       >
         <div className="autocomplete-container">
           <div className="top-header-block">
+          <div className="menu-block-header"><GridViewIcon className="icon-colors-top" />Menu</div>
             <div className="find-help-block-header"><Info className="icon-colors-top" />Find Help</div>
             <div className="find-help-block-language"><Language className="icon-colors-top" />ENGLISH</div>
           </div>
@@ -147,7 +149,7 @@ function CustomMap() {
               type="text"
               className="findaddress"
               id="input-with-icon-adornment"
-              placeholder="enter your postel code" 
+              placeholder="enter your postel code"
               startAdornment={
                 <InputAdornment position="start">
                   <Search />
@@ -163,9 +165,9 @@ function CustomMap() {
 
           <div className="find-help-block">
 
-          <span className="find-help-distance">
-            <div className="top-slider-text">only show me listing within a specific distance</div>
-              <Box sx ={{ height: 50 }}>
+            <span className="find-help-distance">
+              <div className="top-slider-text">only show me listing within a specific distance</div>
+              <Box sx={{ height: 50 }}>
                 <Slider
                   aria-label="Distance"
                   defaultValue={5}
@@ -192,15 +194,17 @@ function CustomMap() {
             </span>
           </div>
         </div>
-
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={fetchNearbyLocations}
-          disabled={!selectedAddress || !selectedCoordinates} // Disable button if no address is selected
-        >
-          Fetch Nearby Locations
-        </Button>
+        <div className="map-search-button-container">
+          <Button
+          size="large"
+            variant="contained"
+            color="primary primarybutton searchbutton"
+            onClick={fetchNearbyLocations}
+            disabled={!selectedAddress || !selectedCoordinates} // Disable button if no address is selected
+          >
+            Search
+          </Button>
+        </div>
 
         {/* Loader */}
         {isLoading && (
@@ -208,56 +212,57 @@ function CustomMap() {
             <CircularProgress />
           </div>
         )}
-
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={selectedCoordinates || center} // Update map center when a new address is selected
-          zoom={10}
-          onClick={() => setActiveMarker(null)} // Close InfoWindow when map is clicked
-          options={mapOptions}
-        >
-          {markers.map((marker) => (
-            <MarkerF
-              key={marker.id}
-              position={marker.position}
-              onClick={() => handleMarkerClick(marker)}
-              icon={{
-                url: marker.id === selectedMarkerId
-                  ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-                  : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                scaledSize: new window.google.maps.Size(40, 40), // Adjust icon size if needed
-              }}
-              animation={
-                marker.id === selectedMarkerId
-                  ? window.google.maps.Animation.BOUNCE
-                  : null
-              }
-            >
-              {activeMarker?.id === marker.id && (
-                <InfoWindow
-                  position={marker.position}
-                  onCloseClick={() => setActiveMarker(null)} // Close the InfoWindow when close is clicked
-                >
-                  <div className="marker_addressblock">
-                    <ul>
-                      <li className="title">{marker.name}</li>
-                      <li><Phone className="icon-colors" /> {marker.contactNumber}</li>
-                      <li><LocationOn className="icon-colors" /> {marker.address}</li>
-                      <li><QueryBuilder className="icon-colors" /> {marker.openHours}</li>
-                      <li>
-                        {" "}
-                        <Language className="icon-colors" />
-                        <a href={`https://${marker.url}`} target="_blank" rel="noopener noreferrer">
-                          {marker.url}
-                        </a>{" "}
-                      </li>
-                    </ul>
-                  </div>
-                </InfoWindow>
-              )}
-            </MarkerF>
-          ))}
-        </GoogleMap>
+        <div className="google-map-container">
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={selectedCoordinates || center} // Update map center when a new address is selected
+            zoom={10}
+            onClick={() => setActiveMarker(null)} // Close InfoWindow when map is clicked
+            options={mapOptions}
+          >
+            {markers.map((marker) => (
+              <MarkerF
+                key={marker.id}
+                position={marker.position}
+                onClick={() => handleMarkerClick(marker)}
+                icon={{
+                  url: marker.id === selectedMarkerId
+                    ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                    : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                  scaledSize: new window.google.maps.Size(40, 40), // Adjust icon size if needed
+                }}
+                animation={
+                  marker.id === selectedMarkerId
+                    ? window.google.maps.Animation.BOUNCE
+                    : null
+                }
+              >
+                {activeMarker?.id === marker.id && (
+                  <InfoWindow
+                    position={marker.position}
+                    onCloseClick={() => setActiveMarker(null)} // Close the InfoWindow when close is clicked
+                  >
+                    <div className="marker_addressblock">
+                      <ul>
+                        <li className="title">{marker.name}</li>
+                        <li><Phone className="icon-colors" /> {marker.contactNumber}</li>
+                        <li><LocationOn className="icon-colors" /> {marker.address}</li>
+                        <li><QueryBuilder className="icon-colors" /> {marker.openHours}</li>
+                        <li>
+                          {" "}
+                          <Language className="icon-colors" />
+                          <a href={`https://${marker.url}`} target="_blank" rel="noopener noreferrer">
+                            {marker.url}
+                          </a>{" "}
+                        </li>
+                      </ul>
+                    </div>
+                  </InfoWindow>
+                )}
+              </MarkerF>
+            ))}
+          </GoogleMap>
+        </div>
       </LoadScript>
       <AddressList addresses={addresses} onAddressClick={handleAddressClick} />
     </>

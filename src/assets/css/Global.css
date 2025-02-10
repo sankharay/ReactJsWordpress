@@ -1,3 +1,44 @@
-.map-container{
+.map-container {
     gap: 0;
+}
+
+.main-page-continer {
+    margin-top: 20px;
+}
+
+.primarybutton {
+    background-color: #E68F5A;
+    color           : #fff;
+}
+
+.searchbutton {
+    background-color: #E68F5A;
+    border-radius   : 10px;
+    width           : 179px;
+    border-radius   : 25px !important;
+    font-size       : 15px;
+    margin          : auto !important;
+}
+
+.icon-colors {
+    color: #E68F5A;
+}
+
+.icon-colors-orange {
+    color: #E68F5A;
+}
+
+.map-address-icon-outer {
+    color           : #DC994C;
+    background-color: rgb(247, 240, 233);
+    display         : inline-flex;
+    justify-content : center;
+    align-items     : center;
+    width           : 50px;
+    height          : 50px;
+    border-radius   : 50%;
+    font-size       : 24px;
+}
+.bottom-text{
+    color: #E68F5A;
 }

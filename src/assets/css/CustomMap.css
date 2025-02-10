@@ -12,15 +12,16 @@
     background-repeat: no-repeat;
     padding-left: 20px;
 }
-.find-help-block-language{
-    margin-bottom: 10px;
-    text-align: right;
-}
 .find-help-block-header{
     font-size: 20px;
     font-weight: 700;
     width: 50%;
     float: left;
+}
+.find-help-block-language{
+    margin-bottom: 10px;
+    text-align: right;
+    font-family: int;
 }
 .icon-colors-top{
     color: #000;
@@ -86,4 +87,25 @@
 .find-help-distance .MuiBox-root .MuiSlider-markLabel{
     left: 50% !important;
     margin-top: -10px;
+}
+.google-map-container{
+    width: 95%;
+    margin: auto;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.google-map-container div{
+    border-radius: 10px;
+}
+.map-search-button-container  button.disabled{
+    background-color: #cccccc !important;
+    cursor: not-allowed;
+}
+.css-pofcw6-MuiButtonBase-root-MuiButton-root.Mui-disabled{
+    background-color: #E68F5A !important;
+    color: #fff !important;
+}
+.map-search-button-container{
+    margin: auto;
 }

@@ -1,32 +1,101 @@
-.addressblock{
+.addressblock {
     background-color: white;
-    font-size: 16px;
-}
-.addressblock li{
-    background-color: #fcd8b6;
-    padding: 20px;
-}
-.addressblock li:hover{
-    background-color: #f2955c;
-    padding: 20px;
-}
-.icon-colors{
-    color: white;
-    font-size: 20px;
-    margin-right: 10px;
-}
-.locationname{
-    color: #000;
-    font-size: 16px;
-    margin-bottom: 10px;
-    display: block;
-    font-weight: bold;
-}
-.servicename{
-    font-size: 14px;
-    padding-bottom: 10px;
-}
-.contactnumber, .address, .openhours, .website, .distance{
-    padding: 5px;
+    font-size       : 16px;
+    width           : 95%;
+    margin          : auto;
 }
 
+.addressblock li {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    width: 95%;
+    margin: auto;
+    margin-bottom: 15px;
+}
+
+.addressblock li:hover {
+    background-color: #fff;
+    padding         : 20px;
+}
+
+.icon-colors {
+    font-size   : 20px;
+    margin-right: 10px;
+}
+
+.locationname {
+    color        : #000;
+    font-size    : 16px;
+    margin-bottom: 10px;
+    display      : block;
+    font-weight  : bold;
+}
+
+.servicename {
+    font-size     : 14px;
+    padding-bottom: 10px;
+}
+
+.contactnumber,
+.address,
+.openhours,
+.website,
+.distance {
+    padding: 1px;
+}
+
+.locationblock-top-block {
+    width: 100%;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.locationblock-top-block .phoneblock {
+    width: 33%;
+    float: left;
+}
+
+.locationblock-top-block .directions {
+    width: 33%;
+    float: left;
+}
+
+.locationblock-top-block .website {
+    width: 33%;
+    float: left;
+}
+
+.shadow-bottom-right {
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    /* Horizontal, Vertical, Blur Radius, Color */
+}
+
+.phoneourter {
+    width : 50%;
+    margin: auto;
+    margin-left: 30%;
+}
+
+.directionouter {
+    width : 50%;
+    margin: auto;
+    margin-left: 30%;
+}
+
+.websiteourter {
+    width : 50%;
+    margin: auto;
+    margin-left: 30%;
+}
+.icon-colors-orange{
+    font-size: 24px;
+}
+.locationblock-top-block .bottom-text
+{
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 10px;
+    margin-left: 5%;
+}
